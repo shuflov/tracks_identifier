@@ -16,8 +16,25 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ imageSrc, track, onRese
     high: 'bg-green-500'
   };
 
-  const handleShare = () => {
+  const handleShare = async () => {
     const text = `🐾 Animal Track Identified!\n\n${track.species} (${track.scientificName})\nFamily: ${track.family}\nConfidence: ${track.confidence}${track.notes ? `\nNotes: ${track.notes}` : ''}\n\nIdentified with Tracks Identifier app`;
+
+    if (imageSrc && navigator.share) {
+      const response = await fetch(imageSrc);
+      const blob = await response.blob();
+      const file = new File([blob], 'track.jpg', { type: 'image/jpeg' });
+      
+      try {
+        await navigator.share({
+          title: `Track: ${track.species}`,
+          text: text,
+          files: [file]
+        });
+        return;
+      } catch {
+      }
+    }
+
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
     window.open(whatsappUrl, '_blank');
   };
