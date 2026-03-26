@@ -3,7 +3,7 @@ module.exports = {
     {
       name: 'tracks-backend',
       script: './server/index.js',
-      cwd: '/home/pi/tracks_identifier',
+      cwd: '/home/shuflovic/tracks_identifier',
       instances: 1,
       autorestart: true,
       watch: false,
@@ -15,7 +15,7 @@ module.exports = {
       name: 'tracks-frontend',
       script: 'npm',
       args: 'run dev',
-      cwd: '/home/pi/tracks_identifier',
+      cwd: '/home/shuflovic/tracks_identifier',
       instances: 1,
       autorestart: true,
       watch: false,
