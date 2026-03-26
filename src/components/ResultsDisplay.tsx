@@ -20,9 +20,23 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ imageSrc, track, onRese
     const text = `🐾 Animal Track Identified!\n\n${track.species} (${track.scientificName})\nFamily: ${track.family}\nConfidence: ${track.confidence}${track.notes ? `\nNotes: ${track.notes}` : ''}\n\nIdentified with Tracks Identifier app`;
 
     if (imageSrc && navigator.share) {
-      const response = await fetch(imageSrc);
-      const blob = await response.blob();
-      const file = new File([blob], 'track.jpg', { type: 'image/jpeg' });
+      const isDataUrl = imageSrc.startsWith('data:');
+      let blob: Blob;
+
+      if (isDataUrl) {
+        const base64 = imageSrc.split(',')[1];
+        const binary = atob(base64);
+        const array = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) {
+          array[i] = binary.charCodeAt(i);
+        }
+        blob = new Blob([array], { type: 'image/jpeg' });
+      } else {
+        const response = await fetch(imageSrc);
+        blob = await response.blob();
+      }
+
+      const file = new File([blob], 'track.jpg', { type: blob.type || 'image/jpeg' });
       
       try {
         await navigator.share({
