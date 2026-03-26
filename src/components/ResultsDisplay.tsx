@@ -16,6 +16,12 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ imageSrc, track, onRese
     high: 'bg-green-500'
   };
 
+  const handleShare = () => {
+    const text = `🐾 Animal Track Identified!\n\n${track.species} (${track.scientificName})\nFamily: ${track.family}\nConfidence: ${track.confidence}${track.notes ? `\nNotes: ${track.notes}` : ''}\n\nIdentified with Tracks Identifier app`;
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
   return (
     <div className="animate-fade-in">
       <div className="bg-green-900/50 border border-green-700 text-green-300 px-4 py-3 rounded-md mb-4">
@@ -55,8 +61,15 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ imageSrc, track, onRese
       </div>
 
       <button
+        onClick={handleShare}
+        className="w-full py-3 bg-green-600 hover:bg-green-700 rounded-lg font-medium transition mb-3"
+      >
+        Share via WhatsApp
+      </button>
+
+      <button
         onClick={onReset}
-        className="w-full py-3 bg-green-600 hover:bg-green-700 rounded-lg font-medium transition"
+        className="w-full py-3 bg-gray-600 hover:bg-gray-700 rounded-lg font-medium transition"
       >
         Identify Another
       </button>
