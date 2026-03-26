@@ -9,7 +9,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = 3001;
+const PORT = 3004;
 
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
@@ -96,7 +96,7 @@ app.post('/api/identify', async (req, res) => {
   
   try {
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
     
     const prompt = `Analyze the provided image containing an animal track. 
 Focus on species common in Slovakia and Central Europe (countries like Slovakia, Czech Republic, Austria, Hungary, Poland).

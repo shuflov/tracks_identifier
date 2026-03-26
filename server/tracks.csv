@@ -1,0 +1,4 @@
+timestamp,species,scientificName,family,confidence,imageUrl,notes
+2026-03-26T10:00:10.272Z,"Roe Deer","Capreolus capreolus","Cervidae",high,https://upload.wikimedia.org/wikipedia/commons/2/23/Capreolus_capreolus_1_%28Marek_Szczepanek%29.jpg,"Heart-shaped, cloven, no dew claws visible."
+2026-03-26T10:01:57.262Z,"Red Fox","Vulpes vulpes","Canidae",high,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Red_Fox_%28Vulpes_vulpes%29_by_Michael_Karmann.jpg/1920px-Red_Fox_%28Vulpes_vulpes%29_by_Michael_Karmann.jpg,"Classic canid track with visible claws."
+2026-03-26T10:04:54.715Z,"Raccoon","Procyon lotor","Procyonidae",high,https://upload.wikimedia.org/wikipedia/commons/e/e1/Raccoon_Tracks.jpg,"5-toed, hand-like prints, paired in bounding gait."
