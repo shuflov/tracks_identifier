@@ -20,32 +20,45 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ imageSrc, track, onRese
     const text = `🐾 Animal Track Identified!\n\n${track.species} (${track.scientificName})\nFamily: ${track.family}\nConfidence: ${track.confidence}${track.notes ? `\nNotes: ${track.notes}` : ''}\n\nIdentified with Tracks Identifier app`;
 
     if (imageSrc && navigator.share) {
-      const isDataUrl = imageSrc.startsWith('data:');
-      let blob: Blob;
-
-      if (isDataUrl) {
-        const base64 = imageSrc.split(',')[1];
-        const binary = atob(base64);
-        const array = new Uint8Array(binary.length);
-        for (let i = 0; i < binary.length; i++) {
-          array[i] = binary.charCodeAt(i);
-        }
-        blob = new Blob([array], { type: 'image/jpeg' });
-      } else {
-        const response = await fetch(imageSrc);
-        blob = await response.blob();
-      }
-
-      const file = new File([blob], 'track.jpg', { type: blob.type || 'image/jpeg' });
-      
       try {
-        await navigator.share({
-          title: `Track: ${track.species}`,
-          text: text,
-          files: [file]
-        });
+        const isDataUrl = imageSrc.startsWith('data:');
+        let blob: Blob;
+
+        if (isDataUrl) {
+          const base64 = imageSrc.split(',')[1];
+          const binary = atob(base64);
+          const array = new Uint8Array(binary.length);
+          for (let i = 0; i < binary.length; i++) {
+            array[i] = binary.charCodeAt(i);
+          }
+          blob = new Blob([array], { type: 'image/jpeg' });
+        } else {
+          const response = await fetch(imageSrc);
+          blob = await response.blob();
+        }
+
+        const file = new File([blob], 'track.jpg', { type: 'image/jpeg' });
+
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            title: `Track: ${track.species}`,
+            text: text,
+            files: [file]
+          });
+          return;
+        }
+      } catch (err) {
+        if (err instanceof Error && err.name === 'AbortError') return;
+        console.error('Share failed:', err);
+      }
+    }
+
+    if (navigator.share && !imageSrc) {
+      try {
+        await navigator.share({ title: `Track: ${track.species}`, text });
         return;
-      } catch {
+      } catch (err) {
+        if (err instanceof Error && err.name === 'AbortError') return;
       }
     }
 
